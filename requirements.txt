@@ -2,6 +2,6 @@ streamlit==1.34.0
 requests==2.31.0
 pandas==1.5.2
 scikit-learn==1.2.0
-numpy==1.21.6
+numpy==1.23.2
 
 
