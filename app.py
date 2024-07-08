@@ -1,9 +1,11 @@
 import pickle
 import streamlit as st
 import requests
-import lzma
+import backports.lzma as lzma  # Importing backports.lzma for handling .xz files
 
 st.set_page_config(page_title='Movie Recommender System', page_icon='🎬')
+
+# Function to fetch movie poster from TMDb API
 def fetch_poster(movie_id):
     api_key = "f10aeb4e2a51eed6ea14951bf5ee13ec"
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
@@ -23,6 +25,7 @@ def fetch_poster(movie_id):
         print("Error fetching movie poster:", e)
         return "https://via.placeholder.com/500x750.png?text=Poster+Not+Available"
 
+# Function to recommend movies based on selected movie
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
@@ -37,7 +40,10 @@ def recommend(movie):
 
     return recommended_movie_names, recommended_movie_posters
 
+# Header for the Streamlit app
 st.header('Movie Recommender System')
+
+# Load compressed pickle files using backports.lzma
 try:
     with lzma.open('movie_list_compressed.pkl.xz', 'rb') as f:
         movies = pickle.load(f)
@@ -50,12 +56,15 @@ except FileNotFoundError:
 
 except pickle.UnpicklingError as e:
     st.error(f"Error loading pickle files: {e}")
+
+# Dropdown to select a movie
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
     "Type or select a movie from the dropdown",
     movie_list
 )
 
+# Button to show recommendations
 if st.button('Show Recommendation'):
     recommended_movie_names, recommended_movie_posters = recommend(selected_movie)
     cols = st.columns(5)
@@ -63,69 +72,48 @@ if st.button('Show Recommendation'):
         with col:
             st.text(name)
             st.image(poster)
+
+# Custom CSS for Streamlit
 st.markdown(
     """
     <style>
-       
         .stApp {
-            background-color: #d1ef71 /* Black background for the app */
+            background-color: #d1ef71; /* Black background for the app */
         }
         .stSelectbox {
-          color:white;
+            color: white; /* Set text color for selectbox */
         }
         .stText {
-            color: white; /* White text */
+            color: white; /* Set text color */
         }
-         .stButton button {
-        background-color: white; /* White background */
-        color: black; /* Black text */
-        padding: 10px 20px; /* Padding for button */
-        border: none; /* No border */
-        border-radius: 5px; /* Rounded corners */
-        cursor: pointer; /* Pointer cursor */
-        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
-    }
-    .stButton button:hover {
-        background-color: #f0f0f0; /* Light gray background on hover */
-    }
-    .stButton button:focus {
-        outline: none; /* Remove outline on focus */
-    }
-    .stButton button:active {
-        background-color: #d9d9d9; /* Lighter gray background on click */
-    }
-    .stButton button span {
-        color: black; /* Ensure text color remains black */
-    }.stButton button {
-        background-color: white; /* White background */
-        color: black !important; /* Black text */
-        padding: 10px 20px; /* Padding for button */
-        border: none; /* No border */
-        border-radius: 5px; /* Rounded corners */
-        cursor: pointer; /* Pointer cursor */
-        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
-    }
-    .stButton button:hover {
-        background-color: #f0f0f0; /* Light gray background on hover */
-    }
-    .stButton button:focus {
-        outline: none; /* Remove outline on focus */
-    }
-    .stButton button:active {
-        background-color: #d9d9d9; /* Lighter gray background on click */
-    }
-    .stButton button span {
-        color: black !important; /* Ensure text color remains black */
-    }
+        .stButton button {
+            background-color: white; /* White background */
+            color: black; /* Black text */
+            padding: 10px 20px; /* Padding for button */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+        }
+        .stButton button:hover {
+            background-color: #f0f0f0; /* Light gray background on hover */
+        }
+        .stButton button:focus {
+            outline: none; /* Remove outline on focus */
+        }
+        .stButton button:active {
+            background-color: #d9d9d9; /* Lighter gray background on click */
+        }
+        .stButton button span {
+            color: black; /* Ensure text color remains black */
+        }
         .stWarning {
             color: #FF1E39; /* Red warning text */
             font-weight: bold; /* Bold text */
         }
-      
-       .stSelectbox label {
+        .stSelectbox label {
             color: white; /* Netflix red for selectbox label */
         }
-       
     </style>
     """,
     unsafe_allow_html=True
