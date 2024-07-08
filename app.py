@@ -1,7 +1,8 @@
 import pickle
 import streamlit as st
 import requests
-import backports.lzma as lzma  # Importing backports.lzma for handling .xz files
+import lzma  # Using lzma from the standard library
+
 
 st.set_page_config(page_title='Movie Recommender System', page_icon='🎬')
 
