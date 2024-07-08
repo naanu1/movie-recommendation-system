@@ -1,75 +1,45 @@
-# Project: Movie Recommender System Using Machine Learning!
+# Movie Recommender System
+In today’s fast-paced world, where time is a scarce resource, recommendation systems play a crucial role. These systems assist users in making informed choices without overwhelming them with too many options. They achieve this by predicting and suggesting content that aligns with individual preferences based on various factors such as browsing history, user profiles, and similarities with other users.
 
-<img src="demo/6.jpeg" alt="workflow" width="70%">
+# Types of Recommendation Systems
 
-Recommendation systems are becoming increasingly important in today’s extremely busy world. People are always short on time with the myriad tasks they need to accomplish in the limited 24 hours. Therefore, the recommendation systems are important as they help them make the right choices, without having to expend their cognitive resources.
+1) Content-Based Filtering
+Definition: Content-based systems focus on the attributes of items (movies, music, etc.) and recommend items with similar attributes to those the user has liked before.
 
-The purpose of a recommendation system basically is to search for content that would be interesting to an individual. Moreover, it involves a number of factors to create personalised lists of useful and interesting content specific to each user/individual. Recommendation systems are Artificial Intelligence based algorithms that skim through all possible options and create a customized list of items that are interesting and relevant to an individual. These results are based on their profile, search/browsing history, what other people with similar traits/demographics are watching, and how likely are you to watch those movies. This is achieved through predictive modeling and heuristics with the data available.
+Examples: Platforms like Twitter and YouTube use content-based recommendations to suggest videos or tweets based on your previous interactions.
 
-# Types of Recommendation System :
+Implementation: They create item profiles and user profiles, predicting that users who liked certain items in the past will likely enjoy similar items in the future.
 
-### 1 ) Content Based :
+Challenges: Content-based systems can sometimes make predictable recommendations and may struggle to suggest items outside a user's established preferences.
 
-- Content-based systems, which use characteristic information and takes item attriubutes into consideration .
+2) Collaborative Filtering
+Definition: Collaborative filtering systems recommend items based on user interactions and similarities between users.
 
-- Twitter , Youtube .
+Examples: Recommending books on Amazon based on what other users with similar reading habits have liked.
 
-- Which music you are listening , what singer are you watching . Form embeddings for the features .
-	
-- User specific actions or similar items reccomendation .
-	
-- It will create a vector of it .
-	
-- These systems make recommendations using a user's item and profile features. They hypothesize that if a user was interested in an item in the past, they will once again be interested in it in the future
-	
-- One issue that arises is making obvious recommendations because of excessive specialization (user A is only interested in categories B, C, and D, and the system is not able to recommend items outside those categories, even though they could be interesting to them).
+Implementation: They use user-item interaction data to find patterns and recommend items liked by users with similar preferences.
 
-### 2 ) Collaborative Based :
-		
-- Collaborative filtering systems, which are based on user-item interactions.
-	
-- Clusters of users with same ratings , similar users .
-	
-- Book recommendation , so use cluster mechanism .
-	
-- We take only one parameter , ratings or comments .
-	
-- In short, collaborative filtering systems are based on the assumption that if a user likes item A and another user likes the same item A as well as another item, item B, the first user could also be interested in the second item . 
-	
-- Issues are :
+Challenges: Scalability issues with large datasets and the tendency to recommend only popular items, potentially overlooking new or less-known items.
 
-	- User-Item nXn matrix , so computationally expensive .
+3) Hybrid Recommendation Systems
+Definition: Hybrid systems combine both content-based and collaborative filtering approaches to provide more accurate and diverse recommendations.
 
-	- Only famous items will get reccomended .
+Examples: Modern platforms like Spotify and Netflix use hybrid systems to balance the strengths of both approaches.
 
-	- New items might not get reccomended at all .   
+Implementation: They leverage techniques like word embeddings and machine learning models to offer personalized recommendations that address the limitations of individual methods.
 
-### 3 ) Hybrid Based :
-	
-- Hybrid systems, which combine both types of information with the aim of avoiding problems that are generated when working with just one kind.
+Advantages: Hybrid systems can overcome the limitations of single-method approaches and deliver more relevant and personalized recommendations.
 
-- Combination of both and used now a days .
+# About this Project
+*This project is a Streamlit web application that recommends movies based on user preferences. It utilizes a machine learning model trained on a dataset of movie metadata from TMDB.
 
-- Uses : word2vec , embedding .           
+*Dataset Used
+The project uses the TMDB 5000 Movie Dataset available on Kaggle.
+Concept Used: Cosine Similarity
+Cosine Similarity: This metric measures the similarity between documents or items by calculating the cosine of the angle between their feature vectors.
 
-# About this project:
+*Implementation: In this project, cosine similarity is used to measure the similarity between movies based on their attributes.
 
-This is a streamlit web application that can recommend various kinds of similar movies based on an user interest.
-here is a demo,
+*Application: By comparing feature vectors (often represented as numpy arrays), cosine similarity helps in recommending movies that are most similar to a user's interests.
 
-# Dataset has been used:
-
-* [Dataset link](https://www.kaggle.com/tmdb/tmdb-movie-metadata?select=tmdb_5000_movies.csv)
-
-# Concept used to build the model.pkl file : cosine_similarity
-
-1 . Cosine Similarity is a metric that allows you to measure the similarity of the documents.
-
-2 . In order to demonstrate cosine similarity function we need vectors. Here vectors are numpy array.
-
-3 . Finally, Once we have vectors, We can call cosine_similarity() by passing both vectors. It will calculate the cosine similarity between these two.
-
-4 . It will be a value between [0,1]. If it is 0 then both vectors are complete different. But in the place of that if it is 1, It will be completely similar.
-
-5 . For more details , check URL : https://www.learndatasci.com/glossary/cosine-similarity/
-
+*Scoring: The similarity score ranges from 0 to 1, where 1 indicates identical items and 0 indicates completely dissimilar items.
