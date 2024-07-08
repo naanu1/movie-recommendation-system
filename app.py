@@ -1,6 +1,7 @@
 import pickle
 import streamlit as st
 import requests
+import lzma
 
 st.set_page_config(page_title='Movie Recommender System', page_icon='🎬')
 def fetch_poster(movie_id):
@@ -37,10 +38,18 @@ def recommend(movie):
     return recommended_movie_names, recommended_movie_posters
 
 st.header('Movie Recommender System')
-movies = pickle.load(open('movie_list_compressed.pkl.xz', 'rb'))
-similarity = pickle.load(open('similarity_compressed.pkl.xz', 'rb'))
+try:
+    with lzma.open('movie_list_compressed.pkl.xz', 'rb') as f:
+        movies = pickle.load(f)
 
+    with lzma.open('similarity_compressed.pkl.xz', 'rb') as f:
+        similarity = pickle.load(f)
 
+except FileNotFoundError:
+    st.error("Pickle files not found. Please make sure they are available.")
+
+except pickle.UnpicklingError as e:
+    st.error(f"Error loading pickle files: {e}")
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
     "Type or select a movie from the dropdown",
